@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -20,18 +22,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
-    String url = "https://drive.google.com/file/d/1XH6wQEftz8oCCl7cmzqUH17AWQ0iRpkp/view?usp=sharing";
+    private Button btnRequest;
+    private String output="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        String url = "https://run.mocky.io/v3/8f71ce66-9edf-4ebf-8c4f-7b67015c4936";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>(){
             @Override
             public void onResponse(JSONArray response) {
                 try {
-                    String output = "";
+
                     for(int i=0;i<response.length();i++) {
                         JSONObject Canzoni = response.getJSONObject(i);
                         // now we get our response from API in json object format.
@@ -40,11 +45,11 @@ public class MainActivity extends AppCompatActivity {
                         // similarly we are extracting all the strings from our json object.
                         String autore = Canzoni.getString("Autore");
                         String titolo = Canzoni.getString("Titolo");
-                        output = "Titolo: "+titolo+ " | Autore: "+autore+
-                                "\n";
+                        output = output + "Titolo: "+titolo+ " | Autore: "+autore+" ";
                     }
 
-                    Toast.makeText(getApplicationContext(),output,Toast.LENGTH_LONG).show();
+                    Toast t = Toast.makeText(getApplicationContext(),output,Toast.LENGTH_LONG);
+                    t.show();
                 } catch (JSONException e) {
                     // if we do not extract data from json object properly.
                     // below line of code is use to handle json exception
